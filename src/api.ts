@@ -1,6 +1,26 @@
 import axios from 'axios';
-
 export const api = axios.create({ baseURL: 'https://campuscultura-api.aaron-navarro.workers.dev/api' });
+
+export interface Dashboard {
+  item: {
+    name: string;
+    discipline: string;
+    date: string;
+    vacancies: number;
+  };
+  linkToDetail?: boolean;
+}
+
+export interface ActivityDetails {
+    id: string;
+    name: string;
+    description: string;
+    date: string;
+
+
+    vacancies: number;
+}
+
 
 
 export interface Page<T> {
@@ -15,8 +35,10 @@ export interface Page<T> {
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   if (token && !config.url?.includes('/auth/')) {
+
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
 
@@ -40,7 +62,7 @@ export function apiError(err: unknown) {
     return {
       code: err.response.data?.code,
       message: err.response.data?.message ?? 'Ocurrió un error.',
-    };
-  }
+    };}
   return { code: undefined, message: 'No se pudo conectar con el servidor.' };
+
 }
